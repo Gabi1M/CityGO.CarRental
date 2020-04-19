@@ -22,8 +22,13 @@ namespace CityGO.CarRental.Core.Service
             var cars = new List<Car>();
             while (await result.ReadAsync())
             {
+                var coordinates = new Coordinates
+                {
+                    X = Convert.ToDouble(result["coordinate_x"]),
+                    Y = Convert.ToDouble(result["coordinate_y"])
+                };
                 cars.Add(new Car(result["manufacturer"].ToString(), result["model"].ToString(),
-                    Convert.ToInt32(result["numberofseats"]), Convert.ToInt32(result["price"]), CarState.Available, Convert.ToInt64(result["id"])));
+                    Convert.ToInt32(result["numberofseats"]), Convert.ToInt32(result["price"]), coordinates, CarState.Available, Convert.ToInt64(result["id"])));
             }
             await connection.CloseAsync();
 
@@ -34,12 +39,14 @@ namespace CityGO.CarRental.Core.Service
         public async Task<long> SetAsync(Car car)
         {
             await connection.OpenAsync();
-            var command = new NpgsqlCommand(@"insert into car(manufacturer, model, numberofseats, price, state) values (@manufacturer, @model, @numberofseats, @price, @state) returning id;", connection);
+            var command = new NpgsqlCommand(@"insert into car(manufacturer, model, numberofseats, price, coordinate_x, coordinate_y, state) values (@manufacturer, @model, @numberofseats, @price, @x, @y, @state) returning id;", connection);
             command.Parameters.AddWithValue("manufacturer", car.Manufacturer);
             command.Parameters.AddWithValue("model", car.Model);
             command.Parameters.AddWithValue("numberofseats", car.NumberOfSeats);
             command.Parameters.AddWithValue("price", car.Price);
             command.Parameters.AddWithValue("state", car.State.ToString());
+            command.Parameters.AddWithValue("x", car.Coordinates.X);
+            command.Parameters.AddWithValue("y", car.Coordinates.Y);
 
             var returned = Convert.ToInt64(await command.ExecuteScalarAsync());
             await connection.CloseAsync();

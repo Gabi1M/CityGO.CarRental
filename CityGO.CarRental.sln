@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityGO.CarRental.Server", "CityGO.CarRental.Server\CityGO.CarRental.Server.csproj", "{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityGO.CarRental.Core", "CityGO.CarRental.Core\CityGO.CarRental.Core.csproj", "{22CA93B1-0DFD-4AF2-9688-3883C426A582}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}.Debug|x64.ActiveCfg = Debug|x64
+		{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}.Debug|x64.Build.0 = Debug|x64
+		{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}.Release|x64.ActiveCfg = Release|x64
+		{6521A673-43D9-40A8-B1EC-B4D29D7E8BA7}.Release|x64.Build.0 = Release|x64
+		{22CA93B1-0DFD-4AF2-9688-3883C426A582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22CA93B1-0DFD-4AF2-9688-3883C426A582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22CA93B1-0DFD-4AF2-9688-3883C426A582}.Debug|x64.ActiveCfg = Debug|x64
+		{22CA93B1-0DFD-4AF2-9688-3883C426A582}.Debug|x64.Build.0 = Debug|x64
+		{22CA93B1-0DFD-4AF2-9688-3883C426A582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22CA93B1-0DFD-4AF2-9688-3883C426A582}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22CA93B1-0DFD-4AF2-9688-3883C426A582}.Release|x64.ActiveCfg = Release|x64
+		{22CA93B1-0DFD-4AF2-9688-3883C426A582}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E5DCEEF1-1B48-435C-A242-BEF6CFDB79DD}
+	EndGlobalSection
+EndGlobal
