@@ -4,7 +4,9 @@ namespace CityGO.CarRental.Core.Models
 {
     public class Photo : BaseEntity
     {
+        [JsonProperty("carid")]
         public long? CarId { get; }
+        
         [JsonProperty("path")]
         public string Path { get; }
 

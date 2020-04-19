@@ -20,8 +20,7 @@ namespace CityGO.CarRental.Core.Service
             var clients = new List<Client>();
             while (await result.ReadAsync())
             {
-                clients.Add(new Client(result["name"].ToString(), result["mail"].ToString(),
-                    result["password"].ToString(), Convert.ToInt32(result["numberofpastrentals"]), Convert.ToInt64(result["id"])));
+                clients.Add(new Client(result["name"].ToString(), result["mail"].ToString(), result["password"].ToString(), Convert.ToInt32(result["numberofpastrentals"]), Convert.ToInt64(result["id"])));
             }
             await connection.CloseAsync();
 

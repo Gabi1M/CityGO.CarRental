@@ -27,8 +27,7 @@ namespace CityGO.CarRental.Core.Service
                     X = Convert.ToDouble(result["coordinate_x"]),
                     Y = Convert.ToDouble(result["coordinate_y"])
                 };
-                cars.Add(new Car(result["manufacturer"].ToString(), result["model"].ToString(),
-                    Convert.ToInt32(result["numberofseats"]), Convert.ToInt32(result["price"]), coordinates, CarState.Available, Convert.ToInt64(result["id"])));
+                cars.Add(new Car(result["manufacturer"].ToString(), result["model"].ToString(), Convert.ToInt32(result["numberofseats"]), Convert.ToInt32(result["price"]), coordinates, (CarState) Enum.Parse<CarState>(result["state"].ToString().Trim()), Convert.ToInt64(result["id"])));
             }
             await connection.CloseAsync();
 
@@ -39,7 +38,7 @@ namespace CityGO.CarRental.Core.Service
         public async Task<long> SetAsync(Car car)
         {
             await connection.OpenAsync();
-            var command = new NpgsqlCommand(@"insert into car(manufacturer, model, numberofseats, price, coordinate_x, coordinate_y, state) values (@manufacturer, @model, @numberofseats, @price, @x, @y, @state) returning id;", connection);
+            var command = new NpgsqlCommand(@"insert into car(manufactuxrer, model, numberofseats, price, coordinate_x, coordinate_y, state) values (@manufacturer, @model, @numberofseats, @price, @x, @y, @state) returning id;", connection);
             command.Parameters.AddWithValue("manufacturer", car.Manufacturer);
             command.Parameters.AddWithValue("model", car.Model);
             command.Parameters.AddWithValue("numberofseats", car.NumberOfSeats);
@@ -56,8 +55,6 @@ namespace CityGO.CarRental.Core.Service
         //============================================================
         public async Task DeleteAsync(long carId)
         {
-            var car = (await GetAsync()).First(x => x.Id == carId);
-
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"delete from car where id = @id", connection);
             command.Parameters.AddWithValue("id", carId);
@@ -65,13 +62,11 @@ namespace CityGO.CarRental.Core.Service
             await command.ExecuteReaderAsync();
             await connection.CloseAsync();
 
-            using (var photoService = new PhotoService())
+            using var photoService = new PhotoService();
+            var photos = (await photoService.GetAsync()).Where(x => x.CarId == carId);
+            foreach (var ph in photos)
             {
-                var photos = (await photoService.GetAsync()).Where(x => x.CarId == carId);
-                foreach (var ph in photos)
-                {
-                    await photoService.DeleteAsync(ph.Id);
-                }
+                await photoService.DeleteAsync(ph.Id);
             }
         }
 

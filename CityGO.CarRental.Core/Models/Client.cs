@@ -6,10 +6,13 @@ namespace CityGO.CarRental.Core.Models
     {
         [JsonProperty("name")]
         public string Name { get; }
+        
         [JsonProperty("mail")]
         public string Mail { get; }
+        
         [JsonProperty("password")]
         public string Password { get; }
+        
         [JsonProperty("numberOfPastRentals")]
         public int NumberOfPastRentals { get; }
 

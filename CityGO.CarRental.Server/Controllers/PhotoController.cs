@@ -17,10 +17,8 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/photos")]
         public async Task<IActionResult> Get()
         {
-            using (var photoService = new PhotoService())
-            {
-                return Ok(await photoService.GetAsync());
-            }
+            using var photoService = new PhotoService();
+            return Ok(await photoService.GetAsync());
         }
 
         //===========================================================//
@@ -40,10 +38,8 @@ namespace CityGO.CarRental.Server.Controllers
             fileStream.Close();
 
             var photo = new Photo(carId, filename);
-            using (var photoService = new PhotoService())
-            {
-                return Ok(await photoService.SetAsync(photo));
-            }
+            using var photoService = new PhotoService();
+            return Ok(await photoService.SetAsync(photo));
         }
 
         //===========================================================//
@@ -52,11 +48,9 @@ namespace CityGO.CarRental.Server.Controllers
         public async Task<IActionResult> Download()
         {
             var id = Convert.ToInt64(Request.Query["id"].First());
-            using (var photoService = new PhotoService())
-            {
-                var photo = (await photoService.GetAsync()).First(x => x.Id == id);
-                return File(System.IO.File.Open(photo.Path, FileMode.Open, FileAccess.Read, FileShare.Read), "image/jpeg");
-            }
+            using var photoService = new PhotoService();
+            var photo = (await photoService.GetAsync()).First(x => x.Id == id);
+            return File(System.IO.File.Open(photo.Path, FileMode.Open, FileAccess.Read, FileShare.Read), "image/jpeg");
         }
     }
 }

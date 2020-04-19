@@ -20,10 +20,8 @@ namespace CityGO.CarRental.Server.Controllers
         {
             try
             {
-                using (var clientService = new ClientService())
-                {
-                    return Ok(await clientService.GetAsync());
-                }
+                using var clientService = new ClientService();
+                return Ok(await clientService.GetAsync());
             }
             catch (Exception ex)
             {
@@ -39,12 +37,9 @@ namespace CityGO.CarRental.Server.Controllers
         {
             try
             {
-                using (var streamReader = new StreamReader(Request.Body))
-                using (var clientService = new ClientService())
-                {
-                    var str = await streamReader.ReadToEndAsync();
-                    return Ok(await clientService.SetAsync(JsonConvert.DeserializeObject<Client>(str)));
-                }
+                using var streamReader = new StreamReader(Request.Body);
+                using var clientService = new ClientService();
+                return Ok(await clientService.SetAsync(JsonConvert.DeserializeObject<Client>(await streamReader.ReadToEndAsync())));
             }
             catch (Exception ex)
             {
@@ -61,10 +56,8 @@ namespace CityGO.CarRental.Server.Controllers
             try
             {
                 var clientId = Convert.ToInt64(Request.Query["id"].First());
-                using (var clientService = new ClientService())
-                {
-                    await clientService.DeleteAsync(clientId);
-                }
+                var clientService = new ClientService();
+                await clientService.DeleteAsync(clientId);
 
                 return Ok();
             }
