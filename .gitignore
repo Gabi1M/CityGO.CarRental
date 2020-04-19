@@ -1,7 +1,6 @@
 /CityGO.CarRental.Core/bin
 /CityGO.CarRental.Core/obj
-/CityGO.CarRental.Core/CityGO.CarRental.Core.csproj
 /CityGO.CarRental.Server/bin
 /CityGO.CarRental.Server/obj
-/CityGO.CarRental.Core/CityGO.CarRental.Core.csproj
-/CityGO.CarRental.sln
+/.idea
+/riderModule.iml
