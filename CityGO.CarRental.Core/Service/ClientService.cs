@@ -16,6 +16,7 @@ namespace CityGO.CarRental.Core.Service
         {
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"select * from client;", connection);
+            Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             var result = await command.ExecuteReaderAsync();
             var clients = new List<Client>();
             while (await result.ReadAsync())
@@ -24,12 +25,15 @@ namespace CityGO.CarRental.Core.Service
             }
             await connection.CloseAsync();
 
+            Logger.Log("Returning data for " + clients.Count + " results", LogType.Info);
             return clients;
         }
 
         //============================================================
         public async Task<long> SetAsync(Client client)
         {
+            Logger.Log("Inserting client: " + client, LogType.Info);
+            
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"insert into client(name, mail, password, numberofpastrentals) values (@name, @mail, @password, @numberofpastrentals) returning id;", connection);
             command.Parameters.AddWithValue("name", client.Name);
@@ -37,6 +41,7 @@ namespace CityGO.CarRental.Core.Service
             command.Parameters.AddWithValue("password", client.Password);
             command.Parameters.AddWithValue("numberofpastrentals", client.NumberOfPastRentals);
 
+            Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             var returned = Convert.ToInt64(await command.ExecuteScalarAsync());
             await connection.CloseAsync();
             return returned;
@@ -45,10 +50,13 @@ namespace CityGO.CarRental.Core.Service
         //============================================================
         public async Task DeleteAsync(long? clientId)
         {
+            Logger.Log("Deleting client with id: " + clientId, LogType.Info);
+            
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"delete from client where id = @id", connection);
             command.Parameters.AddWithValue("id", clientId);
 
+            Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             await command.ExecuteReaderAsync();
             await connection.CloseAsync();
         }

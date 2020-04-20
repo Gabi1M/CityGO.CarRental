@@ -17,6 +17,12 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/photos")]
         public async Task<IActionResult> Get()
         {
+            Console.WriteLine("Received GET request for method: api/photos");
+            Logger.Log("Received GET request for method: api/photos", LogType.Info);
+            
+            Console.WriteLine(Request.Host.Host);
+            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            
             using var photoService = new PhotoService();
             return Ok(await photoService.GetAsync());
         }
@@ -26,6 +32,12 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/photos")]
         public async Task<IActionResult> Set()
         {
+            Console.WriteLine("Received POST request for method: api/photos");
+            Logger.Log("Received POST request for methos: api/photos", LogType.Info);
+            
+            Console.WriteLine(Request.Host.Host);
+            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            
             var carId = Convert.ToInt64(Request.Query["carid"].First());
             var file = (await Request.ReadFormAsync()).Files.GetFile("photo");
             var filename = DateTime.Now.TimeOfDay.Hours.ToString() +
@@ -47,6 +59,12 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/download_photo")]
         public async Task<IActionResult> Download()
         {
+            Console.WriteLine("Received GET request for method: api/download_photo");
+            Logger.Log("Received GET request for method: api/download_photo", LogType.Info);
+            
+            Console.WriteLine(Request.Host.Host);
+            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            
             var id = Convert.ToInt64(Request.Query["id"].First());
             using var photoService = new PhotoService();
             var photo = (await photoService.GetAsync()).First(x => x.Id == id);
