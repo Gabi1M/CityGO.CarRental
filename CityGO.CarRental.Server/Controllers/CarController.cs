@@ -20,9 +20,15 @@ namespace CityGO.CarRental.Server.Controllers
         {
             Console.WriteLine("Received GET request for method: api/cars");
             Logger.Log("Received GET request for method: api/cars", LogType.Info);
-            
-            Console.WriteLine(Request.Host.Host);
-            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+
+            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                              Request.HttpContext.Connection.RemotePort);
+            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                       Request.HttpContext.Connection.RemotePort, LogType.Info);
             
             try
             {
@@ -44,8 +50,14 @@ namespace CityGO.CarRental.Server.Controllers
             Console.WriteLine("Received POST request for method: api/cars");
             Logger.Log("Received POST request for method: api/cars", LogType.Info);
             
-            Console.WriteLine(Request.Host.Host);
-            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                              Request.HttpContext.Connection.RemotePort);
+            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                       Request.HttpContext.Connection.RemotePort, LogType.Info);
             
             try
             {
@@ -68,8 +80,14 @@ namespace CityGO.CarRental.Server.Controllers
             Console.WriteLine("Received DELETE request for method: api/cars");
             Logger.Log("Received DELETE request for method: api/cars", LogType.Info);
             
-            Console.WriteLine(Request.Host.Host);
-            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                              Request.HttpContext.Connection.RemotePort);
+            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                       Request.HttpContext.Connection.RemotePort, LogType.Info);
             
             try
             {

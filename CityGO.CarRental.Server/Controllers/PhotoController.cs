@@ -20,8 +20,14 @@ namespace CityGO.CarRental.Server.Controllers
             Console.WriteLine("Received GET request for method: api/photos");
             Logger.Log("Received GET request for method: api/photos", LogType.Info);
             
-            Console.WriteLine(Request.Host.Host);
-            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                              Request.HttpContext.Connection.RemotePort);
+            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                       Request.HttpContext.Connection.RemotePort, LogType.Info);
             
             using var photoService = new PhotoService();
             return Ok(await photoService.GetAsync());
@@ -35,8 +41,14 @@ namespace CityGO.CarRental.Server.Controllers
             Console.WriteLine("Received POST request for method: api/photos");
             Logger.Log("Received POST request for methos: api/photos", LogType.Info);
             
-            Console.WriteLine(Request.Host.Host);
-            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                              Request.HttpContext.Connection.RemotePort);
+            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                       Request.HttpContext.Connection.RemotePort, LogType.Info);
             
             var carId = Convert.ToInt64(Request.Query["carid"].First());
             var file = (await Request.ReadFormAsync()).Files.GetFile("photo");
@@ -62,8 +74,14 @@ namespace CityGO.CarRental.Server.Controllers
             Console.WriteLine("Received GET request for method: api/download_photo");
             Logger.Log("Received GET request for method: api/download_photo", LogType.Info);
             
-            Console.WriteLine(Request.Host.Host);
-            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                              Request.HttpContext.Connection.RemotePort);
+            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                       Request.HttpContext.Connection.RemotePort, LogType.Info);
             
             var id = Convert.ToInt64(Request.Query["id"].First());
             using var photoService = new PhotoService();
