@@ -18,6 +18,12 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/clients")]
         public async Task<IActionResult> Get()
         {
+            Console.WriteLine("Received GET request for method: api/clients");
+            Logger.Log("Received GET request for method: api/clients", LogType.Info);
+            
+            Console.WriteLine(Request.Host.Host);
+            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            
             try
             {
                 using var clientService = new ClientService();
@@ -35,6 +41,12 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/clients")]
         public async Task<IActionResult> Set()
         {
+            Console.WriteLine("Received POST request for method: api/clients");
+            Logger.Log("Received POST request for method: api/clients", LogType.Info);
+            
+            Console.WriteLine(Request.Host.Host);
+            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            
             try
             {
                 using var streamReader = new StreamReader(Request.Body);
@@ -53,6 +65,12 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/clients")]
         public async Task<IActionResult> Delete()
         {
+            Console.WriteLine("Received DELETE request for method: api/clients");
+            Logger.Log("Received DELETE request for method: api/clients", LogType.Info);
+            
+            Console.WriteLine(Request.Host.Host);
+            Logger.Log("Received request from " + Request.Host.Host, LogType.Info);
+            
             try
             {
                 var clientId = Convert.ToInt64(Request.Query["id"].First());

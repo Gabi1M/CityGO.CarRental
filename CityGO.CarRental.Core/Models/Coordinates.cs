@@ -9,5 +9,10 @@ namespace CityGO.CarRental.Core.Models
         
         [JsonProperty("y")]
         public double Y { get; set; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

@@ -24,5 +24,10 @@ namespace CityGO.CarRental.Core.Models
             Password = password;
             NumberOfPastRentals = numberOfPastRentals;
         }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

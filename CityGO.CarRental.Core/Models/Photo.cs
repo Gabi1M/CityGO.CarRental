@@ -16,5 +16,10 @@ namespace CityGO.CarRental.Core.Models
             CarId = carId;
             Path = path;
         }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

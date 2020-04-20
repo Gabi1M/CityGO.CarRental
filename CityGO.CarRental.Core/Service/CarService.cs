@@ -18,6 +18,7 @@ namespace CityGO.CarRental.Core.Service
         {
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"select * from car;", connection);
+            Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             var result = await command.ExecuteReaderAsync();
             var cars = new List<Car>();
             while (await result.ReadAsync())
@@ -31,12 +32,15 @@ namespace CityGO.CarRental.Core.Service
             }
             await connection.CloseAsync();
 
+            Logger.Log("Returned data for " + cars.Count + " values", LogType.Info);
             return cars;
         }
 
         //============================================================
         public async Task<long> SetAsync(Car car)
         {
+            Logger.Log("Inserting car: " + car, LogType.Info);
+            
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"insert into car(manufactuxrer, model, numberofseats, price, coordinate_x, coordinate_y, state) values (@manufacturer, @model, @numberofseats, @price, @x, @y, @state) returning id;", connection);
             command.Parameters.AddWithValue("manufacturer", car.Manufacturer);
@@ -47,6 +51,7 @@ namespace CityGO.CarRental.Core.Service
             command.Parameters.AddWithValue("x", car.Coordinates.X);
             command.Parameters.AddWithValue("y", car.Coordinates.Y);
 
+            Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             var returned = Convert.ToInt64(await command.ExecuteScalarAsync());
             await connection.CloseAsync();
             return returned;
@@ -55,10 +60,13 @@ namespace CityGO.CarRental.Core.Service
         //============================================================
         public async Task DeleteAsync(long carId)
         {
+            Logger.Log("Deleting car with id: " + carId, LogType.Info);
+            
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"delete from car where id = @id", connection);
             command.Parameters.AddWithValue("id", carId);
 
+            Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             await command.ExecuteReaderAsync();
             await connection.CloseAsync();
 

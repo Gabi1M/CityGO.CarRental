@@ -33,5 +33,10 @@ namespace CityGO.CarRental.Core.Models
             State = state;
             Coordinates = coordinates;
         }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }
