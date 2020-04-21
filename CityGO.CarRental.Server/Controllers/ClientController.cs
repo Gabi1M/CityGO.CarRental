@@ -41,6 +41,44 @@ namespace CityGO.CarRental.Server.Controllers
                 return Problem();
             }
         }
+        
+        //===========================================================//
+        [HttpGet]
+        [Route("api/login")]
+        public async Task<IActionResult> Login()
+        {
+            Console.WriteLine("Received GET request for method: api/login");
+            Logger.Log("Received GET request for method: api/login", LogType.Info);
+            
+            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                              Request.HttpContext.Connection.RemotePort);
+            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
+                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
+                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
+                       Request.HttpContext.Connection.RemotePort, LogType.Info);
+
+            try
+            {
+                var mail = Request.Query["mail"].ToString().Trim();
+                var password = Request.Query["password"].ToString().Trim();
+                using var clientService = new ClientService();
+                if (await clientService.LoginAsync(mail, password))
+                {
+                    return Ok("Login success!");
+                }
+                else
+                {
+                    return Ok("Login failed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return Problem();
+            }
+        }
 
         //===========================================================//
         [HttpPost]
