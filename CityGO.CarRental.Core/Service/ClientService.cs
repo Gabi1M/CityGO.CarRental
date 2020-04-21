@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CityGO.CarRental.Core.Models;
 using CityGO.CarRental.Core.Utils;
@@ -59,6 +60,14 @@ namespace CityGO.CarRental.Core.Service
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             await command.ExecuteReaderAsync();
             await connection.CloseAsync();
+        }
+        
+        //============================================================
+        public async Task<bool> LoginAsync(string mail, string password)
+        {
+            Logger.Log("Checking login information for mail: " + mail + ", password: " + password, LogType.Info);
+            var clients = await GetAsync();
+            return clients.Any(x => x.Mail.Trim() == mail.Trim() && x.Password.Trim() == password.Trim());
         }
 
         //============================================================
