@@ -18,18 +18,13 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/clients")]
         public async Task<IActionResult> Get()
         {
-            Console.WriteLine("Received GET request for method: api/clients");
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Logger.Log("=======================", LogType.Info);
             Logger.Log("Received GET request for method: api/clients", LogType.Info);
-            
-            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
-                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
-                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
-                              Request.HttpContext.Connection.RemotePort);
-            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
-                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
-                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
-                       Request.HttpContext.Connection.RemotePort, LogType.Info);
-            
+            Logger.Log(
+                "Received request from: Remote ip: " + Request.HttpContext.Connection.RemoteIpAddress +
+                ", Remote port: " + Request.HttpContext.Connection.RemotePort, LogType.Info);
+
             try
             {
                 using var clientService = new ClientService();
@@ -47,31 +42,20 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/login")]
         public async Task<IActionResult> Login()
         {
-            Console.WriteLine("Received GET request for method: api/login");
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Logger.Log("=======================", LogType.Info);
             Logger.Log("Received GET request for method: api/login", LogType.Info);
-            
-            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
-                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
-                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
-                              Request.HttpContext.Connection.RemotePort);
-            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
-                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
-                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
-                       Request.HttpContext.Connection.RemotePort, LogType.Info);
+            Logger.Log(
+                "Received request from: Remote ip: " + Request.HttpContext.Connection.RemoteIpAddress +
+                ", Remote port: " + Request.HttpContext.Connection.RemotePort, LogType.Info);
 
             try
             {
-                var mail = Request.Query["mail"].ToString().Trim();
-                var password = Request.Query["password"].ToString().Trim();
+                var mail = Request.Query["Mail"].ToString().Trim();
+                var password = Request.Query["Password"].ToString().Trim();
                 using var clientService = new ClientService();
-                if (await clientService.LoginAsync(mail, password))
-                {
-                    return Ok("Login success!");
-                }
-                else
-                {
-                    return Ok("Login failed!");
-                }
+                var client = await clientService.LoginAsync(mail, password);
+                return Ok(client != null ? JsonConvert.SerializeObject(client) : "FAIL");
             }
             catch (Exception ex)
             {
@@ -85,23 +69,19 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/clients")]
         public async Task<IActionResult> Set()
         {
-            Console.WriteLine("Received POST request for method: api/clients");
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Logger.Log("=======================", LogType.Info);
             Logger.Log("Received POST request for method: api/clients", LogType.Info);
-            
-            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
-                              ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
-                              Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
-                              Request.HttpContext.Connection.RemotePort);
-            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
-                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
-                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
-                       Request.HttpContext.Connection.RemotePort, LogType.Info);
-            
+            Logger.Log(
+                "Received request from: Remote ip: " + Request.HttpContext.Connection.RemoteIpAddress +
+                ", Remote port: " + Request.HttpContext.Connection.RemotePort, LogType.Info);
+
             try
             {
                 using var streamReader = new StreamReader(Request.Body);
                 using var clientService = new ClientService();
-                return Ok(await clientService.SetAsync(JsonConvert.DeserializeObject<Client>(await streamReader.ReadToEndAsync())));
+                var client = JsonConvert.DeserializeObject<Client>(await streamReader.ReadToEndAsync());
+                return client.Validate() ? Ok(await clientService.SetAsync(client)) : Ok("Invalid client!");
             }
             catch (Exception ex)
             {
@@ -115,21 +95,16 @@ namespace CityGO.CarRental.Server.Controllers
         [Route("api/clients")]
         public async Task<IActionResult> Delete()
         {
-            Console.WriteLine("Received DELETE request for method: api/clients");
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Logger.Log("=======================", LogType.Info);
             Logger.Log("Received DELETE request for method: api/clients", LogType.Info);
-            
-            Console.WriteLine("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
-                               ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
-                               Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
-                               Request.HttpContext.Connection.RemotePort);
-            Logger.Log("Received request from: Local ip: " + Request.HttpContext.Connection.LocalIpAddress +
-                       ", Local port: " + Request.HttpContext.Connection.LocalPort + ", Remote ip: " +
-                       Request.HttpContext.Connection.RemoteIpAddress + ", Remote port: " +
-                       Request.HttpContext.Connection.RemotePort, LogType.Info);
-            
+            Logger.Log(
+                "Received request from: Remote ip: " + Request.HttpContext.Connection.RemoteIpAddress +
+                ", Remote port: " + Request.HttpContext.Connection.RemotePort, LogType.Info);
+
             try
             {
-                var clientId = Convert.ToInt64(Request.Query["id"].First());
+                var clientId = Convert.ToInt64(Request.Query["Id"].First());
                 var clientService = new ClientService();
                 await clientService.DeleteAsync(clientId);
 

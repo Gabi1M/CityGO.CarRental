@@ -4,18 +4,19 @@ namespace CityGO.CarRental.Core.Models
 {
     public class Client : BaseEntity
     {
-        [JsonProperty("name")]
+        [JsonProperty("Name")]
         public string Name { get; }
         
-        [JsonProperty("mail")]
+        [JsonProperty("Mail")]
         public string Mail { get; }
         
-        [JsonProperty("password")]
+        [JsonProperty("Password")]
         public string Password { get; }
         
-        [JsonProperty("numberOfPastRentals")]
+        [JsonProperty("NumberOfPastRentals")]
         public int NumberOfPastRentals { get; }
 
+        //===========================================================//
         public Client(string name, string mail, string password, int numberOfPastRentals, long? id = null)
         {
             Id = id;
@@ -25,6 +26,33 @@ namespace CityGO.CarRental.Core.Models
             NumberOfPastRentals = numberOfPastRentals;
         }
 
+        //===========================================================//
+        public bool Validate()
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(Mail))
+            {
+                return false;
+            }
+
+            if (!Mail.Contains("@"))
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(Password))
+            {
+                return false;
+            }
+
+            return false;
+        }
+
+        //===========================================================//
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

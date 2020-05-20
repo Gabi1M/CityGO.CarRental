@@ -48,14 +48,14 @@ namespace CityGO.CarRental.Core.Service
         }
 
         //============================================================
-        public async Task DeleteAsync(long? photoId)
+        public async Task DeleteAsync(long? id)
         {
-            Logger.Log("Deleting photo with id: " + photoId, LogType.Info);
+            Logger.Log("Deleting photo with id: " + id, LogType.Info);
             
-            var photo = (await GetAsync()).First(x => x.Id == photoId);
+            var photo = (await GetAsync()).First(x => x.Id == id);
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"delete from photo where id = @id", connection);
-            command.Parameters.AddWithValue("id", photoId);
+            command.Parameters.AddWithValue("id", id);
 
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             await command.ExecuteReaderAsync();

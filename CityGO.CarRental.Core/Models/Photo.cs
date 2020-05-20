@@ -4,12 +4,13 @@ namespace CityGO.CarRental.Core.Models
 {
     public class Photo : BaseEntity
     {
-        [JsonProperty("carid")]
+        [JsonProperty("CarId")]
         public long? CarId { get; }
         
-        [JsonProperty("path")]
+        [JsonProperty("Path")]
         public string Path { get; }
 
+        //===========================================================//
         public Photo(long carId, string path, long? id = null)
         {
             Id = id;
@@ -17,6 +18,7 @@ namespace CityGO.CarRental.Core.Models
             Path = path;
         }
 
+        //===========================================================//
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

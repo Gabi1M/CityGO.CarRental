@@ -43,8 +43,8 @@ namespace CityGO.CarRental.Core.Service
             
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"insert into car(manufactuxrer, model, numberofseats, price, coordinate_x, coordinate_y, state) values (@manufacturer, @model, @numberofseats, @price, @x, @y, @state) returning id;", connection);
-            command.Parameters.AddWithValue("manufacturer", car.Manufacturer);
-            command.Parameters.AddWithValue("model", car.Model);
+            command.Parameters.AddWithValue("manufacturer", car.Manufacturer.Trim());
+            command.Parameters.AddWithValue("model", car.Model.Trim());
             command.Parameters.AddWithValue("numberofseats", car.NumberOfSeats);
             command.Parameters.AddWithValue("price", car.Price);
             command.Parameters.AddWithValue("state", car.State.ToString());
@@ -58,20 +58,20 @@ namespace CityGO.CarRental.Core.Service
         }
 
         //============================================================
-        public async Task DeleteAsync(long carId)
+        public async Task DeleteAsync(long id)
         {
-            Logger.Log("Deleting car with id: " + carId, LogType.Info);
+            Logger.Log("Deleting car with id: " + id, LogType.Info);
             
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"delete from car where id = @id", connection);
-            command.Parameters.AddWithValue("id", carId);
+            command.Parameters.AddWithValue("id", id);
 
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             await command.ExecuteReaderAsync();
             await connection.CloseAsync();
 
             using var photoService = new PhotoService();
-            var photos = (await photoService.GetAsync()).Where(x => x.CarId == carId);
+            var photos = (await photoService.GetAsync()).Where(x => x.CarId == id);
             foreach (var ph in photos)
             {
                 await photoService.DeleteAsync(ph.Id);

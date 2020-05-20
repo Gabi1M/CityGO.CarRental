@@ -49,13 +49,13 @@ namespace CityGO.CarRental.Core.Service
         }
 
         //============================================================
-        public async Task DeleteAsync(long? clientId)
+        public async Task DeleteAsync(long? id)
         {
-            Logger.Log("Deleting client with id: " + clientId, LogType.Info);
+            Logger.Log("Deleting client with id: " + id, LogType.Info);
             
             await connection.OpenAsync();
             var command = new NpgsqlCommand(@"delete from client where id = @id", connection);
-            command.Parameters.AddWithValue("id", clientId);
+            command.Parameters.AddWithValue("id", id);
 
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             await command.ExecuteReaderAsync();
@@ -63,11 +63,18 @@ namespace CityGO.CarRental.Core.Service
         }
         
         //============================================================
-        public async Task<bool> LoginAsync(string mail, string password)
+        public async Task<Client> LoginAsync(string mail, string password)
         {
             Logger.Log("Checking login information for mail: " + mail + ", password: " + password, LogType.Info);
             var clients = await GetAsync();
-            return clients.Any(x => x.Mail.Trim() == mail.Trim() && x.Password.Trim() == password.Trim());
+            try
+            {
+                return clients.First(x => x.Mail.Trim() == mail.Trim() && x.Password.Trim() == password.Trim());
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         //============================================================
