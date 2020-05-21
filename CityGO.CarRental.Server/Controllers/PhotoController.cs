@@ -58,6 +58,32 @@ namespace CityGO.CarRental.Server.Controllers
 
         //===========================================================//
         [HttpGet]
+        [Route("api/download_photo_stream")]
+        public async Task<IActionResult> DownloadStream()
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Logger.Log("=======================", LogType.Info);
+            Logger.Log("Received GET request for method: api/download_photo_stream", LogType.Info);
+            Logger.Log(
+                "Received request from: Remote ip: " + Request.HttpContext.Connection.RemoteIpAddress +
+                ", Remote port: " + Request.HttpContext.Connection.RemotePort, LogType.Info);
+
+            try
+            {
+                var id = Convert.ToInt64(Request.Query["Id"].First());
+                using var photoService = new PhotoService();
+                var photo = (await photoService.GetAsync()).First(x => x.CarId == id);
+                return File(System.IO.File.Open(photo.Path, FileMode.Open, FileAccess.Read, FileShare.Read), "image/jpeg");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return Problem();
+            }
+        }
+
+        //===========================================================//
+        [HttpGet]
         [Route("api/download_photo")]
         public async Task<IActionResult> Download()
         {
@@ -68,10 +94,18 @@ namespace CityGO.CarRental.Server.Controllers
                 "Received request from: Remote ip: " + Request.HttpContext.Connection.RemoteIpAddress +
                 ", Remote port: " + Request.HttpContext.Connection.RemotePort, LogType.Info);
 
-            var id = Convert.ToInt64(Request.Query["Id"].First());
-            using var photoService = new PhotoService();
-            var photo = (await photoService.GetAsync()).First(x => x.Id == id);
-            return File(System.IO.File.Open(photo.Path, FileMode.Open, FileAccess.Read, FileShare.Read), "image/jpeg");
+            try
+            {
+                var id = Convert.ToInt64(Request.Query["Id"].First());
+                using var photoService = new PhotoService();
+                var photo = (await photoService.GetAsync()).First(x => x.CarId == id);
+                return Ok(await System.IO.File.ReadAllBytesAsync(photo.Path));
+            }
+            catch (Exception ex)
+            {
+                Logger.LogException(ex);
+                return Problem();
+            }
         }
     }
 }

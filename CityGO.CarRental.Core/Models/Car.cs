@@ -21,7 +21,7 @@ namespace CityGO.CarRental.Core.Models
         public Coordinates Coordinates { get; }
 
         [JsonProperty("State")]
-        public CarState State { get; }
+        public CarState State { get; set; }
 
         //===========================================================//
         public Car(string manufacturer, string model, int numberOfSeats, int price, Coordinates coordinates, CarState state, long? id = null)

@@ -6,13 +6,13 @@ namespace CityGO.CarRental.Core.Models
     public class Rental : BaseEntity
     { 
        [JsonProperty("CarId")]
-       public long CarId { get; set; }
+       public long CarId { get; }
 
-       [JsonProperty("ClientID")]
-       public long ClientId { get; set; }
+       [JsonProperty("ClientId")]
+       public long ClientId { get; }
 
        [JsonProperty("DateTime")]
-       public DateTime DateTime { get; set; }
+       public DateTime DateTime { get; }
 
        //===========================================================//
        public Rental(long carId, long clientId, DateTime dateTime, long? id = null)

@@ -21,13 +21,11 @@ namespace CityGO.CarRental.Core.Service
             var comments = new List<Comment>();
             while (await result.ReadAsync())
             {
-                var comment = new Comment(result["mail"].ToString(), result["content"].ToString(),
-                    Convert.ToDateTime(result["datetime"]), Convert.ToInt64(result["id"]));
+                var comment = new Comment(result["mail"].ToString(), result["content"].ToString(), Convert.ToDateTime(result["datetime"]), Convert.ToInt64(result["id"]));
                 comments.Add(comment);
             }
 
             await _connection.CloseAsync();
-
             Logger.Log("Returned data for " + comments.Count + " values", LogType.Info);
             return comments;
         }
@@ -57,7 +55,7 @@ namespace CityGO.CarRental.Core.Service
             var command = new NpgsqlCommand(@"delete from comment where id = @id", _connection);
             command.Parameters.AddWithValue("id", id);
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
-            await command.ExecuteReaderAsync();
+            await command.ExecuteNonQueryAsync();
             await _connection.CloseAsync();
         }
 

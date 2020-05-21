@@ -6,13 +6,13 @@ namespace CityGO.CarRental.Core.Models
     public class Comment : BaseEntity
     {
         [JsonProperty("Mail")]
-        public string Mail { get; set; }
+        public string Mail { get; }
 
         [JsonProperty("Content")]
-        public string Content { get; set; }
+        public string Content { get; }
 
         [JsonProperty("Datetime")]
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime { get; }
 
         //============================================================
         public Comment(string mail, string content, DateTime dateTime, long? id = null)

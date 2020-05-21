@@ -10,13 +10,13 @@ namespace CityGO.CarRental.Core.Service
 {
     public class ClientService : IDisposable
     {
-        private readonly NpgsqlConnection connection = new NpgsqlConnection(AppSettings.ConnectionString);
+        private readonly NpgsqlConnection _connection = new NpgsqlConnection(AppSettings.ConnectionString);
 
         //============================================================
         public async Task<IEnumerable<Client>> GetAsync()
         {
-            await connection.OpenAsync();
-            var command = new NpgsqlCommand(@"select * from client;", connection);
+            await _connection.OpenAsync();
+            var command = new NpgsqlCommand(@"select * from client;", _connection);
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             var result = await command.ExecuteReaderAsync();
             var clients = new List<Client>();
@@ -24,8 +24,7 @@ namespace CityGO.CarRental.Core.Service
             {
                 clients.Add(new Client(result["name"].ToString(), result["mail"].ToString(), result["password"].ToString(), Convert.ToInt32(result["numberofpastrentals"]), Convert.ToInt64(result["id"])));
             }
-            await connection.CloseAsync();
-
+            await _connection.CloseAsync();
             Logger.Log("Returning data for " + clients.Count + " results", LogType.Info);
             return clients;
         }
@@ -34,17 +33,15 @@ namespace CityGO.CarRental.Core.Service
         public async Task<long> SetAsync(Client client)
         {
             Logger.Log("Inserting client: " + client, LogType.Info);
-            
-            await connection.OpenAsync();
-            var command = new NpgsqlCommand(@"insert into client(name, mail, password, numberofpastrentals) values (@name, @mail, @password, @numberofpastrentals) returning id;", connection);
+            await _connection.OpenAsync();
+            var command = new NpgsqlCommand(@"insert into client(name, mail, password, numberofpastrentals) values (@name, @mail, @password, @numberofpastrentals) returning id;", _connection);
             command.Parameters.AddWithValue("name", client.Name);
             command.Parameters.AddWithValue("mail", client.Mail);
             command.Parameters.AddWithValue("password", client.Password);
             command.Parameters.AddWithValue("numberofpastrentals", client.NumberOfPastRentals);
-
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             var returned = Convert.ToInt64(await command.ExecuteScalarAsync());
-            await connection.CloseAsync();
+            await _connection.CloseAsync();
             return returned;
         }
 
@@ -52,14 +49,12 @@ namespace CityGO.CarRental.Core.Service
         public async Task DeleteAsync(long? id)
         {
             Logger.Log("Deleting client with id: " + id, LogType.Info);
-            
-            await connection.OpenAsync();
-            var command = new NpgsqlCommand(@"delete from client where id = @id", connection);
+            await _connection.OpenAsync();
+            var command = new NpgsqlCommand(@"delete from client where id = @id", _connection);
             command.Parameters.AddWithValue("id", id);
-
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
-            await command.ExecuteReaderAsync();
-            await connection.CloseAsync();
+            await command.ExecuteNonQueryAsync();
+            await _connection.CloseAsync();
         }
         
         //============================================================
@@ -80,7 +75,7 @@ namespace CityGO.CarRental.Core.Service
         //============================================================
         public async void Dispose()
         {
-            await connection.DisposeAsync();
+            await _connection.DisposeAsync();
         }
     }
 }

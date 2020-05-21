@@ -49,7 +49,7 @@ namespace CityGO.CarRental.Core.Models
                 return false;
             }
 
-            return false;
+            return true;
         }
 
         //===========================================================//

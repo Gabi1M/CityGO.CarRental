@@ -26,7 +26,6 @@ namespace CityGO.CarRental.Core.Service
                     Convert.ToDateTime(result["datetime"]), Convert.ToInt64(result["id"]));
                 rentals.Add(rental);
             }
-
             await _connection.CloseAsync();
             Logger.Log("Returned data for " + rentals.Count + " values", LogType.Info);
             return rentals;
@@ -36,13 +35,11 @@ namespace CityGO.CarRental.Core.Service
         public async Task<long> SetAsync(Rental rental)
         {
             Logger.Log("Inserting rental: " + rental, LogType.Info);
-
             await _connection.OpenAsync();
             var command = new NpgsqlCommand(@"insert into rental(clientid, carid, datetime) values (@clientid, @carid, @datetime) returning id", _connection);
             command.Parameters.AddWithValue("carid", rental.CarId);
             command.Parameters.AddWithValue("clientid", rental.ClientId);
             command.Parameters.AddWithValue("datetime", rental.DateTime);
-
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
             var returned = Convert.ToInt64(await command.ExecuteScalarAsync());
             await _connection.CloseAsync();
@@ -57,7 +54,7 @@ namespace CityGO.CarRental.Core.Service
             var command = new NpgsqlCommand(@"delete from rental where id = @id", _connection);
             command.Parameters.AddWithValue("id", id);
             Logger.Log("Executing sql command: " + command.CommandText, LogType.Info);
-            await command.ExecuteReaderAsync();
+            await command.ExecuteNonQueryAsync();
             await _connection.CloseAsync();
         }
 

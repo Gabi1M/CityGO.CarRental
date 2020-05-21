@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CityGO.CarRental.Core.Enums;
 using CityGO.CarRental.Core.Models;
 using CityGO.CarRental.Core.Service;
 using CityGO.CarRental.Core.Utils;
@@ -66,8 +67,14 @@ namespace CityGO.CarRental.Server.Controllers
             try
             {
                 using var streamReader = new StreamReader(Request.Body);
+                using var carService = new CarService();
                 using var rentalService = new RentalService();
-                return Ok(await rentalService.SetAsync(JsonConvert.DeserializeObject<Rental>(await streamReader.ReadToEndAsync())));
+
+                var rental = JsonConvert.DeserializeObject<Rental>(await streamReader.ReadToEndAsync());
+                var car = (await carService.GetAsync()).First(x => x.Id == rental.CarId);
+                car.State = CarState.Taken;
+                await carService.UpdateCar(car);
+                return Ok(await rentalService.SetAsync(rental));
             }
             catch (Exception ex)
             {
